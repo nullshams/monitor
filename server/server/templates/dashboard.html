@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>داشبورد مانیتورینگ</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <style>
+      .history {
+          background: #f9f9f9;
+          border: 1px solid #ddd;
+          margin-top: 10px;
+          padding: 5px;
+          max-height: 150px;
+          overflow-y: auto;
+          font-size: 0.9rem;
+      }
+    </style>
+</head>
+<body>
+    <h1>🖥️ داشبورد مانیتورینگ سیستم‌ها</h1>
+    <div id="cards-container" class="cards-container"></div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch("/api/clients");
+                if (!response.ok) throw new Error("خطا در دریافت داده‌ها");
+                const data = await response.json();
+
+                const container = document.getElementById("cards-container");
+                container.innerHTML = "";
+
+                for (const [host, info] of Object.entries(data)) {
+                    const card = document.createElement("div");
+                    card.className = "card";
+
+                    if (info.status === "offline") {
+                        card.style.backgroundColor = "#eee";
+                        card.style.color = "#999";
+                    } else {
+                        card.style.backgroundColor = "white";
+                        card.style.color = "#333";
+                    }
+
+                    card.innerHTML = `
+                        <h2>${host} <span style="font-size:0.8rem; color: ${
+                            info.status === "offline" ? "red" : "green"
+                        };">(${info.status})</span></h2>
+                        <ul>
+                            <li><strong>پلتفرم:</strong> ${info.platform}</li>
+                            <li><strong>CPU:</strong> ${info.cpu}%</li>
+                            <li><strong>Memory:</strong> ${info.memory}%</li>
+                            <li><strong>Disk:</strong> ${info.disk}%</li>
+                        </ul>
+                        <button onclick="sendCommand('${host}', 'restart')">ری‌استارت</button>
+                        <button onclick="toggleHistory('${host}')">نمایش تاریخچه</button>
+                        <div id="history-${host}" class="history" style="display:none;"></div>
+                    `;
+                    container.appendChild(card);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function toggleHistory(hostname) {
+            const historyDiv = document.getElementById(`history-${hostname}`);
+            if (historyDiv.style.display === "none") {
+                // بارگذاری تاریخچه
+                try {
+                    const res = await fetch(`/api/history/${hostname}`);
+                    if (!res.ok) throw new Error("خطا در دریافت تاریخچه");
+                    const data = await res.json();
+
+                    if (data.length === 0) {
+                        historyDiv.innerHTML = "تاریخچه‌ای موجود نیست";
+                    } else {
+                        let html = "<table style='width:100%; border-collapse: collapse;'><tr><th>زمان</th><th>CPU</th><th>Memory</th><th>Disk</th></tr>";
+                        data.slice(0, 10).forEach(row => {
+                            html += `<tr>
+                                <td>${row.timestamp}</td>
+                                <td>${row.cpu}%</td>
+                                <td>${row.memory}%</td>
+                                <td>${row.disk}%</td>
+                            </tr>`;
+                        });
+                        html += "</table>";
+                        historyDiv.innerHTML = html;
+                    }
+                    historyDiv.style.display = "block";
+                } catch(e) {
+                    historyDiv.innerHTML = "خطا در دریافت تاریخچه";
+                    historyDiv.style.display = "block";
+                }
+            } else {
+                historyDiv.style.display = "none";
+            }
+        }
+
+        async function sendCommand(hostname, command) {
+            try {
+                const res = await fetch(`/api/command/${hostname}?command=${command}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (res.ok) alert('دستور ارسال شد');
+                else alert('خطا در ارسال دستور');
+            } catch (e) {
+                alert('خطا: ' + e.message);
+            }
+        }
+
+        setInterval(fetchData, 5000);
+        fetchData();
+    </script>
+</body>
+</html>
