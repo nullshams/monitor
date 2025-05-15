@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7461ddd5-60f7-4ffc-91d0-a689c221ba22" name="Changes" comment="first">
-      <change afterPath="$PROJECT_DIR$/.idea/PycharmProjects.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/dashboard.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +26,18 @@
     <branch-grouping />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "mehditoxic"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/mehditoxic/systemmonitor.git",
+    "accountId": "641ad1b8-ad77-46d7-b3e4-daa5bbb37568"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -71,6 +76,15 @@
       <option name="presentableId" value="Default" />
       <updated>1746251162098</updated>
     </task>
+    <task id="LOCAL-00001" summary="first">
+      <option name="closed" value="true" />
+      <created>1747316203977</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1747316203977</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
