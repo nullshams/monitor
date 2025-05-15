@@ -23,7 +23,8 @@ def get_system_info():
         memory = None
 
     try:
-        disk = psutil.disk_usage("/").percent
+        disk_path = "/" if os.name != "nt" else "C:\\"
+        disk = psutil.disk_usage(disk_path).percent
     except Exception:
         disk = None
 
