@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>صفحه ورود</title>
+<style>
+  body {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+  .login-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 10px;
+    width: 320px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+  }
+  .login-container h2 {
+    margin-bottom: 24px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  .login-container label {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .login-container input[type="text"],
+  .login-container input[type="password"] {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  .login-container button {
+    background-color: #5a67d8;
+    border: none;
+    padding: 12px;
+    color: white;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .login-container button:hover {
+    background-color: #434190;
+  }
+  .error-message {
+    background-color: #ff4c4c;
+    padding: 8px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>ورود به داشبورد</h2>
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login">
+      <label for="username">نام کاربری</label>
+      <input type="text" id="username" name="username" required autocomplete="off" />
+      <label for="password">رمز عبور</label>
+      <input type="password" id="password" name="password" required />
+      <button type="submit">ورود</button>
+    </form>
+  </div>
+</body>
+</html>

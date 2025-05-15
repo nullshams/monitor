@@ -4,33 +4,50 @@ import socket
 import time
 import requests
 import os
-import sys
+from datetime import datetime
 
-SERVER_URL = "http://YOUR_SERVER_IP:8000"  # آدرس سرور رو تغییر بده
+SERVER_URL = "http://192.168.1.104:8000"  # آدرس سرور را در صورت نیاز تغییر بده
 REPORT_INTERVAL = 10  # ثانیه
 COMMAND_CHECK_INTERVAL = 5  # ثانیه
 
 def get_system_info():
     hostname = socket.gethostname()
+    try:
+        cpu = psutil.cpu_percent(interval=1)
+    except Exception:
+        cpu = None
+
+    try:
+        memory = psutil.virtual_memory().percent
+    except Exception:
+        memory = None
+
+    try:
+        disk = psutil.disk_usage("/").percent
+    except Exception:
+        disk = None
+
+    platform_info = platform.system() + " " + platform.release()
+
     return {
         "hostname": hostname,
-        "platform": platform.system() + " " + platform.release(),
-        "cpu": psutil.cpu_percent(interval=1),
-        "memory": psutil.virtual_memory().percent,
-        "disk": psutil.disk_usage("/").percent,
+        "timestamp": datetime.utcnow().isoformat(),
+        "cpu": cpu,
+        "memory": memory,
+        "disk": disk,
+        "additional_info": {
+            "platform": platform_info,
+            "ip": socket.gethostbyname(hostname),
+            "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat()
+        }
     }
 
 def execute_command(command):
-    hostname = socket.gethostname()
-    print(f"دریافت دستور: {command}")
     if command == "restart":
-        print("در حال ری‌استارت سیستم...")
         if platform.system() == "Windows":
             os.system("shutdown /r /t 1")
         else:
             os.system("sudo reboot")
-    else:
-        print(f"دستور ناشناخته: {command}")
 
 def main():
     hostname = socket.gethostname()
@@ -40,20 +57,16 @@ def main():
     while True:
         current_time = time.time()
 
-        # ارسال گزارش هر REPORT_INTERVAL ثانیه
+        # ارسال گزارش
         if current_time - last_report_time > REPORT_INTERVAL:
             info = get_system_info()
             try:
-                res = requests.post(f"{SERVER_URL}/report", json=info, timeout=5)
-                if res.status_code == 200:
-                    print(f"گزارش ارسال شد: {info}")
-                else:
-                    print(f"خطا در ارسال گزارش: {res.status_code}")
-            except Exception as e:
-                print(f"خطا در ارتباط با سرور: {e}")
+                requests.post(f"{SERVER_URL}/report", json=info, timeout=5)
+            except:
+                pass
             last_report_time = current_time
 
-        # چک کردن دستور جدید هر COMMAND_CHECK_INTERVAL ثانیه
+        # بررسی دستورات
         if current_time - last_command_check > COMMAND_CHECK_INTERVAL:
             try:
                 res = requests.get(f"{SERVER_URL}/api/command/{hostname}", timeout=5)
@@ -62,10 +75,8 @@ def main():
                     cmd = data.get("command")
                     if cmd:
                         execute_command(cmd)
-                else:
-                    print(f"خطا در دریافت دستور: {res.status_code}")
-            except Exception as e:
-                print(f"خطا در دریافت دستور: {e}")
+            except:
+                pass
             last_command_check = current_time
 
         time.sleep(1)
