@@ -1,27 +1,26 @@
+import platform
 import psutil
-import socket
 import requests
+import socket
 import time
 
-SERVER_URL = "http://192.168.1.104:8000/report"  # IP سرور خودتو اینجا بذار
+# 🔧 آدرس سرور رو اینجا تنظیم کن (با پورت درست!)
+SERVER_URL = "http://192.168.1.104:8000/report"  # ← IP سرور رو اینجا بذار
 
 def get_system_info():
     return {
         "hostname": socket.gethostname(),
+        "platform": platform.system(),
         "cpu": psutil.cpu_percent(interval=1),
         "memory": psutil.virtual_memory().percent,
         "disk": psutil.disk_usage('/').percent
     }
 
-def send_data():
-    data = get_system_info()
+while True:
     try:
-        response = requests.post(SERVER_URL, json=data)
-        print("Sent:", response.status_code)
+        info = get_system_info()
+        response = requests.post(SERVER_URL, json=info, timeout=5)
+        print(f"Sent to {SERVER_URL} | Status: {response.status_code}")
     except Exception as e:
-        print("Error:", e)
-
-if __name__ == "__main__":
-    while True:
-        send_data()
-        time.sleep(30)
+        print(f"❌ Error: {e}")
+    time.sleep(10)  # هر 10 ثانیه یک بار

@@ -5,19 +5,21 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
 from typing import Dict
 import secrets
+import uvicorn
 
 app = FastAPI()
 security = HTTPBasic()
 client_data: Dict[str, dict] = {}
 
-# نصب مسیر فایل‌های استاتیک و قالب‌ها
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory=".")
+# مسیر استاتیک و قالب‌ها (مطابق ساختار پروژه)
+app.mount("/static", StaticFiles(directory="server/static"), name="static")
+templates = Jinja2Templates(directory="server/templates")
 
-# یوزر و پسورد داشبورد
+# اطلاعات ورود
 USERNAME = "admin"
 PASSWORD = "1234"
 
+# بررسی احراز هویت
 def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, USERNAME)
     correct_password = secrets.compare_digest(credentials.password, PASSWORD)
@@ -29,15 +31,21 @@ def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return credentials.username
 
+# مسیر گزارش‌گیری از کلاینت
 @app.post("/report")
 async def report(info: dict):
     hostname = info.get("hostname", "unknown")
     client_data[hostname] = info
     return {"status": "received"}
 
+# داشبورد برای ادمین
 @app.get("/", response_class=HTMLResponse)
 def dashboard(request: Request, username: str = Depends(get_current_user)):
-    return templates.TemplateResponse("server/dashboard.html", {
+    return templates.TemplateResponse("dashboard.html", {
         "request": request,
         "clients": client_data
     })
+
+# اجرای مستقیم با python main.py
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
