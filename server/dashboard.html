@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>📊 سیستم‌های متصل</h1>
+    {% for host, data in clients.items() %}
+    <div class="client">
+        <h2>{{ host }}</h2>
+        <p>CPU: {{ data["cpu"] }}%</p>
+        <p>Memory: {{ data["memory"] }}%</p>
+        <p>Disk: {{ data["disk"] }}%</p>
+    </div>
+    {% endfor %}
+</body>
+</html>
