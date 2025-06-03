@@ -1,4 +1,6 @@
+# database.py
 import sqlite3
+import json
 from typing import List, Tuple, Optional
 
 DATABASE = "server.db"
@@ -18,6 +20,7 @@ def init_db():
         timestamp TEXT NOT NULL,
         cpu REAL,
         memory REAL,
+        disk REAL,
         additional_info TEXT
     )
     """)
@@ -29,9 +32,7 @@ def init_db():
     )
     """)
     conn.commit()
-    # اضافه کردن یک کاربر پیش‌فرض (admin / 1234) اگر هنوز وجود نداشته باشد
-    cur = conn.execute("SELECT * FROM users WHERE username = ?", ("admin",))
-    if not cur.fetchone():
+    if not conn.execute("SELECT * FROM users WHERE username = ?", ("admin",)).fetchone():
         conn.execute("INSERT INTO users (username, password) VALUES (?, ?)", ("admin", "1234"))
         conn.commit()
 
@@ -40,21 +41,18 @@ def insert_report(data: dict):
     timestamp = data.get("timestamp") or ""
     cpu = data.get("cpu")
     memory = data.get("memory")
-    additional_info = str(data.get("additional_info", ""))
-
-    if not timestamp:
-        from datetime import datetime
-        timestamp = datetime.utcnow().isoformat()
+    disk = data.get("disk")
+    additional_info = json.dumps(data.get("additional_info", {}))
 
     conn.execute("""
-        INSERT INTO reports (hostname, timestamp, cpu, memory, additional_info)
-        VALUES (?, ?, ?, ?, ?)
-    """, (hostname, timestamp, cpu, memory, additional_info))
+        INSERT INTO reports (hostname, timestamp, cpu, memory, disk, additional_info)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (hostname, timestamp, cpu, memory, disk, additional_info))
     conn.commit()
 
 def get_latest_reports() -> dict:
     query = """
-    SELECT r1.hostname, r1.timestamp, r1.cpu, r1.memory, r1.additional_info
+    SELECT r1.hostname, r1.timestamp, r1.cpu, r1.memory, r1.disk, r1.additional_info
     FROM reports r1
     INNER JOIN (
         SELECT hostname, MAX(timestamp) as max_ts
@@ -65,23 +63,30 @@ def get_latest_reports() -> dict:
     rows = conn.execute(query).fetchall()
     results = {}
     for row in rows:
+        additional_info_raw = row["additional_info"]
+        try:
+            additional_info = json.loads(additional_info_raw) if additional_info_raw else {}
+        except json.JSONDecodeError:
+            additional_info = {}
+
         results[row["hostname"]] = {
             "timestamp": row["timestamp"],
             "cpu": row["cpu"],
             "memory": row["memory"],
-            "additional_info": row["additional_info"]
+            "disk": row["disk"],
+            "additional_info": additional_info
         }
     return results
 
-def get_history(hostname: str) -> List[Tuple[str, float, float]]:
+
+def get_history(hostname: str) -> List[Tuple[str, float, float, float]]:
     rows = conn.execute(
-        "SELECT timestamp, cpu, memory FROM reports WHERE hostname = ? ORDER BY timestamp DESC LIMIT 100",
+        "SELECT timestamp, cpu, memory, disk FROM reports WHERE hostname = ? ORDER BY timestamp DESC LIMIT 100",
         (hostname,)
     ).fetchall()
-    return [(r["timestamp"], r["cpu"], r["memory"]) for r in rows]
+    return [(r["timestamp"], r["cpu"], r["memory"], r["disk"]) for r in rows]
 
 def get_user(username: str) -> Optional[Tuple[str, str]]:
-    """یوزرنیم و پسورد را از دیتابیس می‌گیرد"""
     row = conn.execute("SELECT username, password FROM users WHERE username = ?", (username,)).fetchone()
     if row:
         return (row["username"], row["password"])

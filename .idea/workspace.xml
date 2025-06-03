@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7461ddd5-60f7-4ffc-91d0-a689c221ba22" name="Changes" comment="add new feacher">
-      <change afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/templates/login.html" afterDir="false" />
+    <list default="true" id="7461ddd5-60f7-4ffc-91d0-a689c221ba22" name="Changes" comment="add">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/templates/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/static/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/templates/dashboard.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,18 +33,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "mehditoxic"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mehditoxic&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/mehditoxic/systemmonitor.git",
-    "accountId": "641ad1b8-ad77-46d7-b3e4-daa5bbb37568"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mehditoxic/systemmonitor.git&quot;,
+    &quot;accountId&quot;: &quot;641ad1b8-ad77-46d7-b3e4-daa5bbb37568&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -56,18 +53,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.agent.executor": "Run",
-    "Python.database.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.agent.executor&quot;: &quot;Run&quot;,
+    &quot;Python.database.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server" />
@@ -139,7 +136,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747325671769</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add database">
+      <option name="closed" value="true" />
+      <created>1747327224726</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1747327224726</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add">
+      <option name="closed" value="true" />
+      <created>1747327414088</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1747327414088</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,6 +172,8 @@
     <MESSAGE value="secend2" />
     <MESSAGE value="secend3" />
     <MESSAGE value="add new feacher" />
-    <option name="LAST_COMMIT_MESSAGE" value="add new feacher" />
+    <MESSAGE value="add database" />
+    <MESSAGE value="add" />
+    <option name="LAST_COMMIT_MESSAGE" value="add" />
   </component>
 </project>

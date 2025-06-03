@@ -1,33 +1,23 @@
+# agent.py
 import platform
 import psutil
 import socket
 import time
 import requests
 import os
+import subprocess
 from datetime import datetime
 
-SERVER_URL = "http://192.168.1.104:8000"  # آدرس سرور را در صورت نیاز تغییر بده
-REPORT_INTERVAL = 10  # ثانیه
-COMMAND_CHECK_INTERVAL = 5  # ثانیه
+SERVER_URL = os.environ.get("SERVER_URL", "http://192.168.77.163:8000")
+REPORT_INTERVAL = 10
+COMMAND_CHECK_INTERVAL = 5
 
 def get_system_info():
     hostname = socket.gethostname()
-    try:
-        cpu = psutil.cpu_percent(interval=1)
-    except Exception:
-        cpu = None
-
-    try:
-        memory = psutil.virtual_memory().percent
-    except Exception:
-        memory = None
-
-    try:
-        disk_path = "/" if os.name != "nt" else "C:\\"
-        disk = psutil.disk_usage(disk_path).percent
-    except Exception:
-        disk = None
-
+    cpu = psutil.cpu_percent(interval=1)
+    memory = psutil.virtual_memory().percent
+    disk = psutil.disk_usage("/" if os.name != "nt" else "C:\\").percent
+    uptime = time.time() - psutil.boot_time()
     platform_info = platform.system() + " " + platform.release()
 
     return {
@@ -39,16 +29,25 @@ def get_system_info():
         "additional_info": {
             "platform": platform_info,
             "ip": socket.gethostbyname(hostname),
-            "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat()
+            "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat(),
+            "uptime": int(uptime)
         }
     }
 
 def execute_command(command):
     if command == "restart":
-        if platform.system() == "Windows":
-            os.system("shutdown /r /t 1")
-        else:
-            os.system("sudo reboot")
+        os.system("shutdown /r /t 1" if platform.system() == "Windows" else "sudo reboot")
+    elif command == "shutdown":
+        os.system("shutdown /s /t 1" if platform.system() == "Windows" else "sudo poweroff")
+    elif command.startswith("run:"):
+        cmd = command.split("run:", 1)[1].strip()
+        subprocess.Popen(cmd, shell=True)
+    elif command.startswith("say:"):
+        msg = command.split("say:", 1)[1].strip()
+        if platform.system() == "Darwin":
+            os.system(f'say "{msg}"')
+        elif platform.system() == "Linux":
+            os.system(f'espeak "{msg}"')
 
 def main():
     hostname = socket.gethostname()
@@ -58,7 +57,6 @@ def main():
     while True:
         current_time = time.time()
 
-        # ارسال گزارش
         if current_time - last_report_time > REPORT_INTERVAL:
             info = get_system_info()
             try:
@@ -67,7 +65,6 @@ def main():
                 pass
             last_report_time = current_time
 
-        # بررسی دستورات
         if current_time - last_command_check > COMMAND_CHECK_INTERVAL:
             try:
                 res = requests.get(f"{SERVER_URL}/api/command/{hostname}", timeout=5)
