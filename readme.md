@@ -33,7 +33,7 @@
 
 ---
 
-## 🧭 نصب سرور (Linux / Windows / macOS)
+## 🧭 نصب سرور (Linux / Windows)
 
 ```bash
 git clone https://github.com/mehditoxic/monitor.git
