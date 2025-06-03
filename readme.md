@@ -129,7 +129,7 @@ monitor/
 ├── main.py              # سرور FastAPI
 ├── database.py          # مدیریت SQLite و کاربران
 ├── templates/           # فایل‌های HTML داشبورد
-├── static/              # CSS و JS
+├── static/              # CSS 
 ├── client/
 │   ├── agent.py
 │   ├── install-agent.sh
