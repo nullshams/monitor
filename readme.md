@@ -3,8 +3,8 @@
 یک پلتفرم مانیتورینگ سیستم به‌صورت real-time با استفاده از **FastAPI** برای سرور و **Python agents** برای کلاینت‌ها.
 
 ---
-![نمای داشبورد](images/dark.png)
-![نمای داشبورد](images/light.png)
+![نمای داشبورد](image/dark.png)
+![نمای داشبورد](image/light.png)
 
 ## ✨ امکانات
 
