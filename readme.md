@@ -38,7 +38,7 @@
 ## 🧭 نصب سرور (Linux / Windows)
 
 ```bash
-git clone https://github.com/mehditoxic/monitor.git
+git clone https://github.com/nullshams/monitor.git
 cd monitor
 ```
 
